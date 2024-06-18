@@ -7,6 +7,7 @@ public class UserInterface {
 
     private Scanner scanner;
     private TodoDao database;
+    private int currId;
 
     public UserInterface(Scanner scanner, TodoDao database) {
         this.scanner = scanner;
@@ -30,6 +31,39 @@ public class UserInterface {
             }
 
             // implement the functionality here
+            System.out.println("command was: " + command);
+            switch (command) {
+                case "1": {
+                    System.out.println("Listing the database contents");
+                    this.database.list().stream().forEach(System.out::println);
+                    break;
+                }
+                case "2": {
+                    System.out.println("Adding a new todo");
+                    System.out.println("Enter name:");
+                    String name = scanner.nextLine();
+                    System.out.println("Enter description:");
+                    String description = scanner.nextLine();
+                    this.database.add(new Todo(name, description, false));
+                    break;
+                }
+                case "3": {
+                    System.out.println("Which todo should be marked as done (give the id)?");
+                    int id = scanner.nextInt();
+                    this.database.markAsDone(id);
+                    break;
+                }
+                case "4": {
+                    System.out.println("Which todo should be removed (give the id)?");
+                    int id = scanner.nextInt();
+                    this.database.remove(id);
+                    break;
+                }
+                default: {
+                    System.out.println("Invalid command");
+                    continue;
+                }
+            }
         }
 
         System.out.println("Thank you!");
